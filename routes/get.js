@@ -6,21 +6,22 @@ const Post = require('../model/post')
 
 router.get('/get', verify, async (req, res) => {
   //const userId = req.params.userId
-  const post = await Post.find().select('-password')
+  const post = await Post.find({})
+  .select('-password')
   if (!post) {
-        res.json({
+        return res.json({
         status:401,
         massage:' no post to display' ,
         successfull:false,
         data:null
         })
-      };
-            res.json({
-            status:200,
-            massage: 'successfull users',
-            successfull:false,
-            data:post
-            });
+  }
+     res.json({
+    status:200,
+    massage: 'successfull posts',
+    successfull:true,
+    post:post
+     })
 })
 
 

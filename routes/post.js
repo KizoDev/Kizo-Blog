@@ -1,18 +1,16 @@
 const express = require('express');
 const app = express();
 const router = express.Router()
-const verify = require('./verifytoken')
 const Post = require('../model/post')
-
-router.post('/post',verify, async (req, res) => {
-    const userId = req.params.Id;
-    const post = new Post({
-        userId:userId,
-        tittle:req.body.tittle,
-        description:req.body.description,
+const User = require('../model/user')
+router.post('/post',async (req, res) => {
+    const post = new Post ({
+      user_id:req.user?._id,
+      tittle:req.body.tittle,
+      description:req.body.description,
     })
-    const savedPost = await post.save();
-    if (!savedPost) {
+    const savedpost = await post.save()
+    if (!savedpost) {
         return res.json({
         status:401,
         massage:(`No post with id : ${userId}`),
@@ -25,8 +23,9 @@ router.post('/post',verify, async (req, res) => {
         status: 200,
         message: 'post successful',
         successfull:true,
-        data:savedPost
+        post:savedpost
       })
 })
 
+//module.exports = router
 module.exports = router

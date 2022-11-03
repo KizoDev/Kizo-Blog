@@ -11,7 +11,7 @@ module.exports = function auth (req, res, next) {
       try {
             const verified = jwt.verify(token, process.env.TOKEN_SECRET)
         res.user = verified
-        next();
+        next()
       } 
       catch (err) {
         res.json({

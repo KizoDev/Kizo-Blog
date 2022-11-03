@@ -1,10 +1,9 @@
 const mongoose = require('mongoose')
-//const Schema = mongoose.Schema; // get props
 
-const PostSchema = new mongoose.Schema({
-  userId:{
+const postSchema = new mongoose.Schema({
+  user_id:{
     type:mongoose.Schema.Types.ObjectId,
-    ref:'userId'
+    ref:'User'
     },
     tittle:{
         type:String,
@@ -23,7 +22,4 @@ const PostSchema = new mongoose.Schema({
         ref:'Comment'
     }
 })
-PostSchema.virtual('url').get(function(){
-  return '/post/' + this._id
-} )
-module.exports = mongoose.model('post', PostSchema)
+module.exports = mongoose.model('post', postSchema)

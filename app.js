@@ -13,7 +13,8 @@ const routergetuser = require('./routes/getuser');
 // middleware
 
 app.use(express.json());
-app.use(express.urlencoded({extended:'true'}))
+app.use(express.urlencoded({ extended: true }));
+
 
 // routes
 
@@ -26,7 +27,7 @@ app.use('/api/v1', routergetuser);
 app.use(notFound);
 app.use(errorHandlerMiddleware);
 
-const port = 6000;
+const port = process.env.PORT || 6000;
 
 const start = async () => {
   try {
