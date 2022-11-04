@@ -1,6 +1,10 @@
 const mongoose = require('mongoose')
 
 const commentSchema = new mongoose.Schema({
+    user_id:{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:'User'
+    },
     text:{
         type:String,
         required:true
@@ -9,9 +13,9 @@ const commentSchema = new mongoose.Schema({
         type:Date,
         default:Date.now
     },
-    post:{
+    post_id:{
         type:mongoose.Schema.Types.ObjectId,
-        ref:'post'
+        ref:'Post'
     }
 })
 module.experts = mongoose.model('Comment', commentSchema)

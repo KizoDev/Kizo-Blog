@@ -3,7 +3,9 @@ const app = express();
 const router = express.Router()
 const Post = require('../model/post')
 const User = require('../model/user')
-router.post('/post',async (req, res) => {
+const verify = require('../routes/verifytoken')
+
+router.post('/post', verify, async (req, res) => {
     const post = new Post ({
       user_id:req.user?._id,
       tittle:req.body.tittle,
@@ -27,5 +29,4 @@ router.post('/post',async (req, res) => {
       })
 })
 
-//module.exports = router
 module.exports = router
