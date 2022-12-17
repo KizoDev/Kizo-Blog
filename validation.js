@@ -1,8 +1,8 @@
 const joi = require('@hapi/joi')
 
 
-// register validation
-const registerValidation = (data) => {
+// signup validation
+const signupValidation = (data) => {
     const schema = {
     name:joi.string().required(),
     email:joi.string().required(),
@@ -12,7 +12,7 @@ const registerValidation = (data) => {
     
 }
 //login vallidation 
-const loginValidation = (data) => {
+const signinValidation = (data) => {
     const schema = {
    email:joi.string().required(),
     password: joi.string().required()
@@ -22,5 +22,5 @@ const loginValidation = (data) => {
 }
 
 
-module.exports.registerValidation = registerValidation
-module.exports.loginValidation = loginValidation
+module.exports.signupValidation = signupValidation
+module.exports.signinValidation = signinValidation

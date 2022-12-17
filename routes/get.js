@@ -3,30 +3,43 @@ const app = express();
 const router = express.Router()
 const verify = require('./verifytoken');
 const Post = require('../model/post')
+const Comment = require('../model/comment')
+const mongoose = require('mongoose')
 
 router.get('/get', verify, async (req, res) => {
-  //const userId = req.params.userId
+ 
   const post = await Post.aggregate([
-      {
+     {
             $lookup:{
-                from:"user",
-                localField:"user_id",
+                from:"users",
+                localField:"postedBy",
                 foreignField:"_id",
                 as:"users",
             },
         },
         {
+          $unwind:{
+            path: "$users",
+          preserveNullAndEmptyArrays: true,
+          }
+        },
+        {
             $lookup:{
-                from:"comment",
-                localField:"comment_id",
-                foreignField:"_id",
-                as:"comment_count"
+                from:"comments",
+                localField:"_id",
+                foreignField:"post_id",
+                as:"comments"
             },
         },
-        { $addFields: {comment_count: { $size: "$comment_count" } } }
+        {
+          $unwind:{
+            path: "$comments",
+          preserveNullAndEmptyArrays: true,
+          }
+        },
+       // { $addFields: {comment_count: { $size: "$comments" } } }
    ])
-   .exec();
-
+   .exec()
     if (!post) {
         return res.json({
         status:401,
@@ -34,8 +47,8 @@ router.get('/get', verify, async (req, res) => {
         successfull:false,
         data:null
         })
-  }
-     res.json({
+    }
+    return res.json({
     status:200,
     massage: 'successfull posts',
     successfull:true,

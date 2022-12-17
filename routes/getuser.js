@@ -4,30 +4,43 @@ const app = express();
 const router = express.Router()
 const Post = require('../model/post');
 const verify = require('../routes/verifytoken')
+const mongoose = require('mongoose')
 
 
 
-router.get('/getuser/:id', async (req, res) => {
-    const post = await Post.find(req.params)
-    const posts = await Post.aggregate([
+router.get('/getuser/:id', verify, async (req, res) => {
+  req.user.password = undefined
+  const post_id = req.params.id
+   const post = await Post.aggregate([
     {
-         $match: { _id: post._id }
-    },
+      $match: { _id: mongoose.Types.ObjectId(post_id)}    },
     {
         $lookup:{
-            from:"user",
-            localField:"user_id",
+            from:"users",
+            localField:"postedBy",
             foreignField:"_id",
             as:"users",
         },
     },
     {
+      $unwind:{
+        path: "$users",
+      preserveNullAndEmptyArrays: true,
+      }
+    },
+    {
         $lookup:{
-            from:"comment",
-            localField:"comment_id",
-            foreignField:"_id",
-            as:"comment",
+            from:"comments",
+            localField:"_id",
+            foreignField:"post_id",
+            as:"comments",
         },
+    },
+    {
+      $unwind:{
+        path: "$comments",
+      preserveNullAndEmptyArrays: true,
+      }
     },
    ])
    .exec();
@@ -44,7 +57,7 @@ router.get('/getuser/:id', async (req, res) => {
         status:200,
         massage: 'successfull posts',
         successfull:true,
-        post:posts
+        post:post
         })
     
 } )

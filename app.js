@@ -2,6 +2,7 @@ const express = require('express');
 const app = express();
 const connectDB = require('./db/connect');
 require('dotenv').config();
+const {TOKEN_SECRET} = require('./key')
 const notFound = require('./middleware/not-found');
 const errorHandlerMiddleware = require('./middleware/error-handler');
 

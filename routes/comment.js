@@ -1,31 +1,36 @@
 const express = require('express');
+const { Mongoose } = require('mongoose');
 const app = express();
 const router = express.Router()
-const Comment = require('../model/post')
+const Comment = require('../model/comment');
+const verify = require('../routes/verifytoken')
 
-
-
-router.post('/post/:id/comment',async (req, res) => {
-    const id = req.params
+router.post('/post/:id/comment',verify,async (req, res) => {
+    const {id} = req.params
+    req.user.password = undefined
     const comment = new Comment ({
-        user_id:req.user?._id,
+        postedBy:req.user,
         text:req.body.text,
         post_id:id
     })
-    const comments = comment.save()
-    if (!comment) {
+    const comments = await comment.save()
+    const popcomments = await comments
+    .populate("postId" )
+    //.exec()
+
+    if (!comments) {
         res.json({
             status: 401,
             message: 'comment unsuccessful',
             successfull:false,
-            comment:comments,
+            comment:null,
           })
     }
     res.json({
         status: 200,
-        message: 'comment successful',
+        message: 'comment post successful',
         successfull:true,
-        comment:comments,
+        comment:popcomments,
       })
 })
 module.exports = router

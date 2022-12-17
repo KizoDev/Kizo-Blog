@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 
 const commentSchema = new mongoose.Schema({
-    user_id:{
+    postedBy:{
         type:mongoose.Schema.Types.ObjectId,
         ref:'User'
     },
@@ -18,4 +18,4 @@ const commentSchema = new mongoose.Schema({
         ref:'Post'
     }
 })
-module.experts = mongoose.model('Comment', commentSchema)
+module.exports = mongoose.model('Comment', commentSchema)

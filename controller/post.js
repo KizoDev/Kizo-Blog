@@ -1,13 +1,10 @@
-const express = require('express');
+/*const express = require('express');
 const app = express();
-const router = express.Router()
 const mongoose = require('mongoose')
 const Post = require('../model/post')
-const User = require('../model/user')
 const verify = require('../routes/verifytoken')
 
-router.post('/post', verify, async (req, res) => {
-  //const userId = req.params.id
+const userPosts = async (req, res) => {
   req.user.password = undefined
     const post = new Post ({
       tittle:req.body.tittle,
@@ -19,7 +16,7 @@ router.post('/post', verify, async (req, res) => {
     if (!savedpost) {
         return res.json({
         status:401,
-        massage:(`No post with id : ${user_Id}`),
+        massage:(`No post with id : ${postedBy}`),
         successfull:false,
         data:null
         })
@@ -30,6 +27,7 @@ router.post('/post', verify, async (req, res) => {
         successfull:true,
         post:savedpost
       })
-})
+};
 
-module.exports = router
+module.exports = {userPosts}
+*/
