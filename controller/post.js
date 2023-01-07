@@ -1,8 +1,7 @@
-/*const express = require('express');
+const express = require('express');
 const app = express();
 const mongoose = require('mongoose')
 const Post = require('../model/post')
-const verify = require('../routes/verifytoken')
 
 const userPosts = async (req, res) => {
   req.user.password = undefined
@@ -30,4 +29,3 @@ const userPosts = async (req, res) => {
 };
 
 module.exports = {userPosts}
-*/
